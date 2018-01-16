@@ -1,0 +1,14 @@
+#active {
+    position: absolute;
+    right: 5px;
+    font-size: 50px;
+}
+
+#arrow { 
+    width: 20%;
+    height: auto;
+}
+
+.choice {
+    justify-content: space-around;
+}
