@@ -1,6 +1,6 @@
 #active {
     position: absolute;
-    right: 5px;
+    right: 400px;
     font-size: 50px;
 }
 
@@ -9,6 +9,24 @@
     height: auto;
 }
 
-.choice {
-    justify-content: space-around;
+#choice1 {
+    margin-left: 20px;
+}
+#choice2 {
+    margin-left: 75px;
+}
+#choice3 {
+    margin-left: 80px;
+}
+#choice4 {
+    margin-left: 75px;
+}
+#choice5 {
+    margin-left: 80px;
+}
+#choice6 {
+    margin-left: 75px;
+}
+#choice7 {
+    margin-left: 75px;
 }

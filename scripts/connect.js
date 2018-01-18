@@ -1,8 +1,10 @@
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext('2d');
 
-let turn = document.getElementById('active');
+let turnColor = document.getElementById('active');
+let turn = true;
 let gameBoard = matrix();
+turnColor.style.color = "red";
 /*
 context.beginPath();
 context.arc(100,75,50,0,2*Math.PI);
@@ -14,34 +16,41 @@ function board(input) {
     let y = 0;
     let distanceX = 55;
     let distanceY = 75;
-    while( x < 6 && y < 5) {
-        if(input[x][y] == 0) {
+    while( x <= 6 && y <=5 ) {
+        if(input[y][x] == 0) {
             context.beginPath();
             context.arc(distanceX, distanceY, 50, 0, 2*Math.PI);
             context.stroke();
         }
-        if(input[x][y] == 1) {
+        if(input[y][x] == 1) {
             context.beginPath();
             context.arc(distanceX, distanceY, 50, 0, 2*Math.PI);
-            context.stroke();
             context.fillStyle = "#e22006";
+            context.fill();
+            context.stroke();
         }
-        if(input[x][y] == 2) {
+        if(input[y][x] == 2) {
             context.beginPath();
             context.arc(distanceX, distanceY, 50, 0, 2*Math.PI);
-            context.stroke();
             context.fillStyle = "#fffa07";
+            context.fill()
+            context.stroke();
         }
-        if( x >=5) {
+        if( x == 6 && y<=6) {
             y += 1;
             x = 0;
             distanceX = 55;
             distanceY += 150;
+        } else {
+            x+=1;
+            distanceX +=150;
         }
-        x+=1;
-        distanceX +=150;
         console.log(x);
-        console.log(y);
+    }
+}
+
+function drop(matrix, turn) {
+    if(turn == true) {
     }
 }
 
