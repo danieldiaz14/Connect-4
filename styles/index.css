@@ -1,7 +1,7 @@
 #active {
     position: absolute;
-    right: 400px;
-    font-size: 50px;
+    right: 10px;
+    font-size: 40px;
 }
 
 #arrow { 
@@ -9,24 +9,15 @@
     height: auto;
 }
 
-#choice1 {
-    margin-left: 20px;
+#play {
+    position: absolute;
+    right: 94px;
+    top: 120px;
 }
-#choice2 {
-    margin-left: 75px;
-}
-#choice3 {
-    margin-left: 80px;
-}
-#choice4 {
-    margin-left: 75px;
-}
-#choice5 {
-    margin-left: 80px;
-}
-#choice6 {
-    margin-left: 75px;
-}
-#choice7 {
-    margin-left: 75px;
+
+#scoreBoard {
+    position: absolute;
+    right: 100px;
+    top: 40px;
+    font-size: 40px;
 }
