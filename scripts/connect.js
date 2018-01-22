@@ -5,7 +5,6 @@ let turnColor = document.getElementById('active');
 let turn = true;
 let gameBoard = matrix();
 let counters = [5,5,5,5,5,5,5];
-let reset = [5,5,5,5,5,5,5];
 let score1 = 0;
 let score2 = 0;
 turnColor.style.color = "#e22006";
@@ -219,11 +218,6 @@ function board(input) {
     }
 }
 
-function drop(matrix, turn) {
-    if(turn == true) {
-    }
-}
-
 function matrix() {
     let board = []; 
     for(let x = 0; x < 6; x+=1) {
@@ -232,19 +226,8 @@ function matrix() {
     return board;
 }
 
-function winner(matrix) {
-    let countRed = 0;
-    let countYellow = 0;
-    for(let i = 0; i < 6; i++) {
-        for(let j = 0; j < 7; j++) {
-            if(matrix[i][j] == 1) {
-                if(countRed == 4) {
-                    alert('test');
-                }
-                countRed+=1;
-            }
-        }
-    }
+function reset() {
+    return [5,5,5,5,5,5,5];
 }
 
 function updateValue(player, value1, value2) {
@@ -254,11 +237,11 @@ function redo() {
     if(turn == true) {
         score1++;
         gameBoard = matrix();
-        counters = reset;
+        counters = reset();
     } else {
         score2++;
         gameBoard = matrix();
-        counters = reset;
+        counters = reset();
     }
 }
 function draw() {
