@@ -23,164 +23,61 @@ canvas.addEventListener('click', function(event) {
     let handY = 0;
     let handYOffset = handY + 1000;
     if( x >= handX && x <= handXOffset && y >= handY && y <= handYOffset) {
-        update1();
+        updaterow(gameBoard, 0);
     }
     if(x >= handX+170&& x <= handXOffset+170 && y >=handY && handYOffset) {
-        update2();
+        updaterow(gameBoard, 1);
     }
     if(x >= handX+320&& x <= handXOffset+300 && y >=handY && handYOffset) {
-        update3();
+        updaterow(gameBoard, 2);
     }
     
     if(x >= handX+470&& x <= handXOffset+450 && y >=handY && handYOffset) {
-        update4();
+        updaterow(gameBoard, 3);
     }
     if(x >= handX+620&& x <= handXOffset+600 && y >=handY && handYOffset) {
-        update5();
+        updaterow(gameBoard, 4);
     }
     if(x >= handX+770&& x <= handXOffset+750 && y >=handY && handYOffset) {
-        update6();
+        updaterow(gameBoard, 5);
     }
     if(x >= handX+920&& x <= handXOffset+920 && y >=handY && handYOffset) {
-        update7();
+        updaterow(gameBoard, 6);
     }
   }, false);
 
-function update1() {
-    if(gameBoard[counters[0]][0] == 0) {
+
+function updaterow(data, column) {
+    if(data[counters[column]][column] == 0) {
         if(turn == true) {
-            gameBoard[counters[0]][0] = 1;
-            console.log("counter " + counters[0])
+            data[counters[column]][column] = 1;
             turnColor.style.color = "#fffa07";
-            counters[0]--;
+            counters[column]--;
             turn = false;
-            console.log(gameBoard);
-            console.log("counter " + counters[0]);
         } else {
-            gameBoard[counters[0]][0] = 2;
+            data[counters[column]][column] = 2;
             turnColor.style.color = "#e22006";
-            counters[0]--;
+            counters[column]--;
             turn = true;
-            console.log(gameBoard);
         }
     }
 }
 
-function update2() {
-    if(gameBoard[counters[1]][1] == 0) {
-        if(turn == true) {
-            gameBoard[counters[1]][1] = 1;
-            console.log("counter " + counters[1])
-            turnColor.style.color = "#fffa07";
-            counters[1]--;
-            turn = false;
-            console.log(gameBoard);
-            console.log("counter " + counters[1]);
-        } else {
-            gameBoard[counters[1]][1] = 2;
-            turnColor.style.color = "#e22006";
-            counters[1]--;
-            turn = true;
-            console.log(gameBoard);
-        }
-    }
-}
-function update3() {
-    if(gameBoard[counters[2]][2] == 0) {
-        if(turn == true) {
-            gameBoard[counters[2]][2] = 1;
-            console.log("counter " + counters[0])
-            turnColor.style.color = "#fffa07";
-            counters[2]--;
-            turn = false;
-            console.log(gameBoard);
-            console.log("counter " + counters[0]);
-        } else {
-            gameBoard[counters[2]][2] = 2;
-            turnColor.style.color = "#e22006";
-            counters[2]--;
-            turn = true;
-            console.log(gameBoard);
-        }
-    }
-}
-function update4() {
-    if(gameBoard[counters[3]][3] == 0) {
-        if(turn == true) {
-            gameBoard[counters[3]][3] = 1;
-            console.log("counter " + counters[3])
-            turnColor.style.color = "#fffa07";
-            counters[3]--;
-            turn = false;
-            console.log(gameBoard);
-            console.log("counter " + counters[0]);
-        } else {
-            gameBoard[counters[3]][3] = 2;
-            turnColor.style.color = "#e22006";
-            counters[3]--;
-            turn = true;
-            console.log(gameBoard);
-        }
-    }
-}
-function update5() {
-    if(gameBoard[counters[4]][4] == 0) {
-        if(turn == true) {
-            gameBoard[counters[4]][4] = 1;
-            console.log("counter " + counters[0])
-            turnColor.style.color = "#fffa07";
-            counters[4]--;
-            turn = false;
-            console.log(gameBoard);
-            console.log("counter " + counters[0]);
-        } else {
-            gameBoard[counters[4]][4] = 2;
-            turnColor.style.color = "#e22006";
-            counters[4]--;
-            turn = true;
-            console.log(gameBoard);
-        }
-    }
-}
-function update6() {
-    if(gameBoard[counters[5]][5] == 0) {
-        if(turn == true) {
-            gameBoard[counters[5]][5] = 1;
-            console.log("counter " + counters[0])
-            turnColor.style.color = "#fffa07";
-            counters[5]--;
-            turn = false;
-            console.log(gameBoard);
-            console.log("counter " + counters[0]);
-        } else {
-            gameBoard[counters[5]][5] = 2;
-            turnColor.style.color = "#e22006";
-            counters[5]--;
-            turn = true;
-            console.log(gameBoard);
-        }
-    }
-}
-function update7() {
-    if(gameBoard[counters[6]][6] == 0) {
-        if(turn == true) {
-            gameBoard[counters[6]][6] = 1;
-            console.log("counter " + counters[0])
-            turnColor.style.color = "#fffa07";
-            counters[6]--;
-            turn = false;
-            console.log(gameBoard);
-            console.log("counter " + counters[0]);
-        } else {
-            gameBoard[counters[6]][6] = 2;
-            turnColor.style.color = "#e22006";
-            counters[6]--;
-            turn = true;
-            console.log(gameBoard);
-        }
-    }
+function checkWinner(data) {
+
 }
 
+function drawCircle(x, y, color) {
+    context.beginPath();
+    context.arc(x, y, 40, 0, 2*Math.PI);
+    if(color == 0) {
+        context.stroke();
+        return;
+    }
+    context.fillStyle = color;
+    context.fill();
+    context.stroke();
+}
 function board(input) {
     let x = 0;
     let y = 0;
@@ -188,23 +85,14 @@ function board(input) {
     let distanceY = 45;
     while( x <= 6 && y <=5 ) {
         if(input[y][x] == 0) {
-            context.beginPath();
-            context.arc(distanceX, distanceY, 40, 0, 2*Math.PI);
-            context.stroke();
+            drawCircle(distanceX, distanceY, 0);
         }
         if(input[y][x] == 1) {
-            context.beginPath();
-            context.arc(distanceX, distanceY, 40, 0, 2*Math.PI);
-            context.fillStyle = "#e22006";
-            context.fill();
-            context.stroke();
+            drawCircle(distanceX, distanceY, "#e22006");
         }
         if(input[y][x] == 2) {
-            context.beginPath();
-            context.arc(distanceX, distanceY, 40, 0, 2*Math.PI);
-            context.fillStyle = "#fffa07";
-            context.fill()
-            context.stroke();
+            
+            drawCircle(distanceX, distanceY, "#fffa07");
         }
         if( x == 6 && y<=6) {
             y += 1;
