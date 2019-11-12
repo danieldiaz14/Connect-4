@@ -3,14 +3,21 @@
     <head>
         <title>Connect 4!</title>
         <link rel="stylesheet" href="./styles/index.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     </head>
     <body>
-        <div id="active">Its your turn!</div>
-        <div id="scoreBoard">
-            <p id="score"></p>
+        <div class="container">
+            <div class="ui segment">
+                <h2 class="ui floated header">
+                    <div id="active">It's your turn!</div>
+                </h2>
+                <button id="play" onclick="redo()">Play Again</button>
+                <div id="scoreBoard">
+                    <p id="score"></p>
+                </div>
+            </div>
+            <canvas id="canvas" width="1020" height="640"></canvas>
         </div>
-        <button id="play" onclick="redo()">Play Again</button>
-        <canvas id="canvas" width="1020" height="640"></canvas>
         <script src="./scripts/connect.js"></script>
     </body>
 </html>

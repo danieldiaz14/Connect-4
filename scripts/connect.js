@@ -8,12 +8,6 @@ let counters = [5,5,5,5,5,5,5];
 let score1 = 0;
 let score2 = 0;
 turnColor.style.color = "#e22006";
-/*
-context.beginPath();
-context.arc(100,75,50,0,2*Math.PI);
-context.stroke();
-*/
-//7 column, 6 rows.
 
 canvas.addEventListener('click', function(event) {
     let x = event.pageX - 0;
@@ -49,22 +43,74 @@ canvas.addEventListener('click', function(event) {
 
 function updaterow(data, column) {
     if(data[counters[column]][column] == 0) {
-        if(turn == true) {
+       
+        if (turn === true) {
             data[counters[column]][column] = 1;
             turnColor.style.color = "#fffa07";
             counters[column]--;
-            turn = false;
+            const checkForWinner = winner();
+            if (!checkForWinner) turn = false;
         } else {
             data[counters[column]][column] = 2;
             turnColor.style.color = "#e22006";
             counters[column]--;
-            turn = true;
+            const checkForWinner = winner();
+            if (!checkForWinner) turn = true;
         }
     }
 }
 
-function checkWinner(data) {
+const validateWinner = data => {
+    const height = data.length;
+    const width = data[0].length;
+    const empty_slot = 0;
+    for (let r = 0; r < height; r++) {
+        for (let c = 0; c < width; c++) {
+            const player = data[r][c];
+            if (player === empty_slot) continue;
+            if (c + 3 < width) {
+                if (r + 3 < height) {
+                    // checks diagonal down right
+                    if (
+                        player === data[r+1][c+1] &&
+                        player === data[r+2][c+2] &&
+                        player === data[r+3][c+3] 
+                    ) return player;
+                }
+                if (r - 3 >= 0) {
+                    if (
+                        player === data[r-1][c+1] &&
+                        player === data[r-2][c+2] &&
+                        player === data[r-3][c+3]
+                    ) return player;
+                }
+                if (
+                    player === data[r][c+1] &&
+                    player === data[r][c+2] &&
+                    player === data[r][c+3] 
+                ) return player;
+            }
+            if (r + 3 < height) {
+                if (
+                    player === data[r+1][c] &&
+                    player === data[r+2][c] &&
+                    player === data[r+3][c] 
+                ) return player;
+            }
+        }
+    }
+    return -1
+}
 
+const winner = () => {
+    const playerValue = validateWinner(gameBoard);
+    if (playerValue > -1) {
+        const playerWon = playerValue === 1 ? "Player Red" : "Player Yellow";
+        document.getElementById('active').innerText = `${playerWon} has won!`;
+        turnColor.style.color = playerWon === "Player Red" ? "#e22006" : "#fffa07";
+        return playerWon;
+    }
+    return false;
 }
 
 function drawCircle(x, y, color) {
@@ -91,7 +137,6 @@ function board(input) {
             drawCircle(distanceX, distanceY, "#e22006");
         }
         if(input[y][x] == 2) {
-            
             drawCircle(distanceX, distanceY, "#fffa07");
         }
         if( x == 6 && y<=6) {
@@ -119,24 +164,27 @@ function reset() {
 }
 
 function updateValue(player, value1, value2) {
-    document.getElementById(player).innerText = value1 + ':' + value2;
+    document.getElementById(player).innerText = `${value1}:${value2}`;
 } // update value function. Allows us to change values on canvas to manipulate state of the game.
 function redo() {
+    let textWinner;
     if(turn == true) {
         score1++;
         gameBoard = matrix();
         counters = reset();
+        textWinner = "It's your turn red";
     } else {
         score2++;
         gameBoard = matrix();
         counters = reset();
+        textWinner = "It's your turn yellow";
     }
+    document.getElementById('active').innerText = textWinner;
 }
 function draw() {
     context.fillStyle = "#3a74d1";
     context.fillRect(0, 0, canvas.width, canvas.height);
     board(gameBoard);
-    //winner(gameBoard);
     updateValue('score', score1, score2);
     requestAnimationFrame(draw);
 }
