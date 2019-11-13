@@ -1,13 +1,11 @@
 import React from 'react';
 
-import { Circle } from '../svgs/circleSVG';
+import GameBoard from './Connect4Board';
 
 const App = props => {
     return (
-        <div>
-            <Circle color="white"/>
-            <Circle color="white"/>
-            <Circle color="white"/>
+        <div className="ui container">
+           <GameBoard/>
         </div>
     )
 };
