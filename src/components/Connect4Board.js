@@ -23,7 +23,7 @@ const Connect4Board = props => {
             const color = circleValue === 0 ? "white" : circleValue === 1 ? "red" : "yellow"
             return (
                 <div className="column">
-                    <Circle color="white"/>
+                    <Circle color={color}/>
                 </div>
             )
         }))
@@ -31,27 +31,26 @@ const Connect4Board = props => {
     }
 
     return (
-        <div className="ui grid container">
-            
-            <div className="seven column row">
+        <div className="ui seven column padded grid">
+            <div className="column">
                 {renderBoard()[0]}
             </div>
-            <div className="seven column row">
+            <div className="column">
                 {renderBoard()[1]}
             </div>
-            <div className="seven column row">
+            <div className="column">
                 {renderBoard()[2]}
             </div>
-            <div className="seven column row">
+            <div className="column">
                 {renderBoard()[3]}
             </div>
-            <div className="seven column row">
+            <div className="column">
                 {renderBoard()[4]}
             </div>
-            <div className="seven column row">
+            <div className="column">
                 {renderBoard()[5]}
             </div>
-            <div className="seven column row">
+            <div className="column">
                 {renderBoard()[6]}
             </div>
         </div>
