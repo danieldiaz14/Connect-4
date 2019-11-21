@@ -3,19 +3,9 @@ import React, { useState , useEffect} from 'react';
 import { Circle } from './svgs/circleSVG';
 
 const Connect4Board = props => {
-    
-    const [gameBoard, updateBoard] = useState([]);
+    const { gameBoard, updateBoard } = props;
+
     const [playerTurn, updateTurn] = useState(Math.random() >= 0.5);
-
-    useEffect( () => updateBoard(createBoard()), []);
-
-    const createBoard = () => {
-        const board = [];
-        for (let i = 0; i < 6; i++) {
-            board[i] = new Array(7).fill(0);
-        };
-        return board;
-    };
 
     const changeCircleValue = (rowIndex, columnIndex) => {
         if (!gameBoard[rowIndex][columnIndex]) {

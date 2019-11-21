@@ -6,7 +6,7 @@ const createBoard = () => {
         return board;
 };
 
-const initialState = createBoard();
+export const initialGameState = createBoard();
 
 export default (state, action) => {
     switch (action.type) {
