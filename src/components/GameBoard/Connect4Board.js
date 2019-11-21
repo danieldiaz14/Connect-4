@@ -1,12 +1,11 @@
-import './Connect4Board.css';
 import React, { useState , useEffect} from 'react';
 
-import { Circle } from '../svgs/circleSVG';
+import { Circle } from './svgs/circleSVG';
 
 const Connect4Board = props => {
     
     const [gameBoard, updateBoard] = useState([]);
-    const [playerTurn, updateTurn] = useState(false);
+    const [playerTurn, updateTurn] = useState(Math.random() >= 0.5);
 
     useEffect( () => updateBoard(createBoard()), []);
 
@@ -20,10 +19,9 @@ const Connect4Board = props => {
 
     const changeCircleValue = (rowIndex, columnIndex) => {
         if (!gameBoard[rowIndex][columnIndex]) {
-            const copy = gameBoard;
             const updateValue = playerTurn ? 1 : 2;
-            copy[rowIndex][columnIndex] = updateValue;
-            updateBoard([...copy]);
+            gameBoard[rowIndex][columnIndex] = updateValue;
+            updateBoard([...gameBoard]);
             updateTurn(!playerTurn);
         }
     };

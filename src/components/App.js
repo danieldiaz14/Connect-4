@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useReducer } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 
-import GameBoard from './Connect4Board';
+import GameBoard from './GameBoard';
+import PlayerSelection from './PlayerSelection';
 import PlayerOverlay from './PlayerOverlay';
 
 const App = props => {
     return (
         <div className="ui container">
-            <PlayerOverlay player1="Daniel" player2="Jessica" score1={0} score2={0}/>
-            <GameBoard/>
+            <BrowserRouter>
+                <div className="ui container">
+                    <Route path="/" exact component={PlayerSelection} />
+                    <Route path="/GameBoard" component={GameBoard} />
+                </div>
+            </BrowserRouter>
         </div>
     )
 };
