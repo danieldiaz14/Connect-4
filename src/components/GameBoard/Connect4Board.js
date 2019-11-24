@@ -1,6 +1,6 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState } from 'react';
 
-import { Circle } from './svgs/circleSVG';
+import Circle from '../svgs/circleSVG';
 
 const Connect4Board = props => {
     const { gameBoard, updateBoard } = props;

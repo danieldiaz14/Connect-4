@@ -1,12 +1,13 @@
 import React from 'react';
 
+import PlayerForm from './PlayerForm';
+import Circle from '../svgs/circleSVG';
 
 const PlayerSelection = () => {
 
     return (
-        
         <div className="ui container">
-            PlayerSelection
+            <PlayerForm />
         </div>
     )
 };
