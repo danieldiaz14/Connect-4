@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PlayerForm from './PlayerForm';
-import Circle from '../svgs/circleSVG';
+//import Circle from '../svgs/circleSVG';
 
 const PlayerSelection = () => {
 

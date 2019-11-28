@@ -4,7 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import GameBoard from './GameBoard';
 import GameStateReducer, { initialGameState } from './GameState';
 import PlayerSelection from './PlayerSelection';
-import PlayerOverlay from './PlayerOverlay';
+//import PlayerOverlay from './PlayerOverlay';
 
 
 const PlayerInfoReducer = (state, action) => {
