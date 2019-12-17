@@ -1,8 +1,8 @@
 const errorMessage = ( isError = false, player ) => {
     if (!isError) return {isError, errorHeader: '', errorMessage: '' };
     if (isError === "blank") {
-        const errorMessage = `${player} cannot have empty space.`;
-        const errorHeader = `${player} has empty space.`
+        const errorMessage = `${player} cannot have an empty space.`;
+        const errorHeader = `${player} has an empty space.`
         return {
             isError: true,
             errorHeader,
@@ -23,7 +23,7 @@ const searchForBlankSpace = str => str.includes(" ");
 const checkForEmptyStrings = str => str.length < 1;
 
 
-const checkForError = ({firstPlayer, secondPlayer}) => {
+const isValidPlayerName = ({firstPlayer, secondPlayer}) => {
     if (checkForEmptyStrings(firstPlayer)) return errorMessage("empty", "Player1");
     if (searchForBlankSpace(firstPlayer)) return errorMessage("blank", "Player1");
     if (checkForEmptyStrings(secondPlayer)) return errorMessage("empty", "Player2");
@@ -31,4 +31,4 @@ const checkForError = ({firstPlayer, secondPlayer}) => {
     return errorMessage();
 };
 
-export default checkForError;
+export default isValidPlayerName;

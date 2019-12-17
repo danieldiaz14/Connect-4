@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FormError from './FormError';
-import checkForError from './errorUtil';
+import validPlayerNames from './errorUtil';
 
 const PlayerForm = props => {
     const [firstPlayer, updateFirstPlayer ] = useState("");
@@ -18,14 +18,19 @@ const PlayerForm = props => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        updateError(checkForError({firstPlayer, secondPlayer}));
+        const checkForError = validPlayerNames({firstPlayer, secondPlayer});
+        updateError(checkForError);
+        if (!checkForError.isError) {
+            props.onSubmit({firstPlayer, secondPlayer})
+        }
     };
 
     const renderErrorMessage = () => {
         const {isError, errorHeader, errorMessage} = error;
-        if (isError) return <FormError errorHeader={errorHeader} errorMessage={errorMessage}/>
+        if (isError) return <FormError onClose={closeErrorBox} errorHeader={errorHeader} errorMessage={errorMessage}/>
     };
 
+    const closeErrorBox = () => updateError({...error, isError: false});
     
     return (
         <form className="ui form" onSubmit={handleSubmit}>

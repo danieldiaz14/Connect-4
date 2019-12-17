@@ -5,9 +5,12 @@ import PlayerForm from './PlayerForm';
 
 const PlayerSelection = () => {
 
+    const handleFormSubmission = formSubmission => {
+        console.log(formSubmission);
+    }
     return (
         <div className="ui container">
-            <PlayerForm />
+            <PlayerForm onSubmit={handleFormSubmission}/>
         </div>
     )
 };

@@ -4,7 +4,7 @@ const FormError = props => {
 
     return (
         <div className="ui negative message">
-            <i className="close icon"/>
+            <i onClick={props.onClose} className="close icon"/>
             <div className="header">{props.errorHeader}</div>
             <div>{props.errorMessage}</div>
         </div>
