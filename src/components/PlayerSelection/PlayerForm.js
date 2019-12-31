@@ -3,8 +3,7 @@ import FormError from './FormError';
 import validPlayerNames from './errorUtil';
 
 const PlayerForm = props => {
-    const [firstPlayer, updateFirstPlayer ] = useState("");
-    const [secondPlayer, updateSecondPlayer ] = useState("");
+    const [player, updatePlayer ] = useState("");
     const [error, updateError ] = useState({
         isError: false,
         errorHeader: "",
@@ -12,16 +11,15 @@ const PlayerForm = props => {
     });
 
     const handleChange = e => {
-        const updatePlayer = e.target.name === "firstPlayer" ? updateFirstPlayer : updateSecondPlayer;
         updatePlayer(e.target.value);
     };
 
     const handleSubmit = e => {
         e.preventDefault();
-        const checkForError = validPlayerNames({firstPlayer, secondPlayer});
+        const checkForError = validPlayerNames(player);
         updateError(checkForError);
         if (!checkForError.isError) {
-            props.onSubmit({firstPlayer, secondPlayer})
+            props.onSubmit(player)
         }
     };
 
@@ -34,14 +32,10 @@ const PlayerForm = props => {
     
     return (
         <form className="ui form" onSubmit={handleSubmit}>
-            <div className=" equal width fields">
+            <div className="equal width fields">
                 <div className="field">
-                    <label>Player 1 name:</label>
-                    <input type="text" name="firstPlayer" placeholder="Player 1" value={firstPlayer} onChange={handleChange} autoComplete="off"/>
-                </div>
-                <div className="field">
-                    <label>Player 2 name:</label>
-                    <input type="text" name="secondPlayer" placeholder="Player 2" value={secondPlayer} onChange={handleChange} autoComplete="off"/>
+                    <label>{player.length < 1 ? "Player" : player}</label>
+                    <input type="text" placeholder="Player" value={player} onChange={handleChange} autoComplete="off"/>
                 </div>
             </div>
             <button className="ui button primary" type="submit">Confirm</button>
