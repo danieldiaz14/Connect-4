@@ -34,7 +34,7 @@ const PlayerForm = props => {
         <form className="ui form" onSubmit={handleSubmit}>
             <div className="equal width fields">
                 <div className="field">
-                    <label>{player.length < 1 ? "Player" : player}</label>
+                    <label><h1>{player.length < 1 ? "Player" : player}</h1></label>
                     <input type="text" placeholder="Player" value={player} onChange={handleChange} autoComplete="off"/>
                 </div>
             </div>

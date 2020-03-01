@@ -1,11 +1,9 @@
 import React from 'react';
 
 import PlayerForm from './PlayerForm';
-import PlayerColor from './PlayerColor';
+import PlayerColorGrid from './PlayerColorGrid';
 
 const PlayerSelection = (props) => {
-    const colors = ["red", "blue", "yellow", "teal", "green"];
-
     const handleFormSubmission = formSubmission => {
         console.log(formSubmission);
     };
@@ -19,11 +17,11 @@ const PlayerSelection = (props) => {
             <div className="ui two column very relaxed grid">
                 <div className="column">
                     <PlayerForm onSubmit={handleFormSubmission}/>
-                    <PlayerColor colors={colors} handleClick={handleColorPick}/>
+                    <PlayerColorGrid handleClick={handleColorPick}/>
                 </div>
                 <div className="column">
                     <PlayerForm onSubmit={handleFormSubmission}/>
-                    <PlayerColor colors={colors} handleClick={handleColorPick}/>
+                    <PlayerColorGrid handleClick={handleColorPick}/>
                 </div>
                
             </div>
