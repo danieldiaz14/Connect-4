@@ -1,3 +1,3 @@
-import PlayerOverlay from './PlayerOverlay';
+import PlayerOverlay from "./PlayerOverlay";
 
 export default PlayerOverlay;

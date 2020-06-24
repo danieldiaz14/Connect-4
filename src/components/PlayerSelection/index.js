@@ -1,3 +1,3 @@
-import PlayerSelection from './PlayerSelection';
+import PlayerSelection from "./PlayerSelection";
 
 export default PlayerSelection;
