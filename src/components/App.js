@@ -6,23 +6,15 @@ import GameStateReducer, { initialGameState } from "./GameState";
 import PlayerSelection from "./PlayerSelection";
 import PlayerOverlay from "./PlayerOverlay";
 
-const PlayerInfoReducer = (state, action) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
-};
+export const PlayerInfoContext = React.createContext();
 
-const App = (props) => {
+const App = props => {
   const [boardState, updateBoardState] = useReducer(
     GameStateReducer,
     initialGameState
   );
-  const [playerInformation, updatePlayerInformation] = useReducer(
-    PlayerInfoReducer,
-    {}
-  );
 
+  const [state, dispatch] = useReducer(PlayerInfoReducer, defaultPlayerState);
   return (
     <div className="ui container">
       <BrowserRouter>
@@ -31,10 +23,9 @@ const App = (props) => {
             path="/"
             exact
             render={() => (
-              <PlayerSelection
-                playerInformation={playerInformation}
-                updatePlayerInfo={updatePlayerInformation}
-              />
+              <PlayerInfoContext.Provider value={{ state, dispatch }}>
+                <PlayerSelection />
+              </PlayerInfoContext.Provider>
             )}
           />
           <Route
@@ -51,6 +42,39 @@ const App = (props) => {
       </BrowserRouter>
     </div>
   );
+};
+
+const defaultPlayerState = {
+  firstPlayer: {
+    playerName: "",
+    colorPicked: ""
+  },
+  secondPlayer: {
+    playerName: "",
+    colorPicked: ""
+  }
+};
+
+const PlayerInfoReducer = (state, action) => {
+  const payload = action.payload;
+  switch (action.type) {
+    case "updatePlayerOne":
+      return {
+        ...state,
+        firstPlayer: {
+          playerName: payload
+        }
+      };
+    case "updatePlayerTwo":
+      return {
+        ...state,
+        secondPlayer: {
+          playerName: payload
+        }
+      };
+    default:
+      return state;
+  }
 };
 
 export default App;

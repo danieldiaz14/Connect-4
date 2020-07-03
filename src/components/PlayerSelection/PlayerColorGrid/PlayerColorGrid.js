@@ -1,12 +1,12 @@
 import "./PlayerColor.css";
 import React, { useState } from "react";
-import Circle from "../svgs/circleSVG";
-import { COLOR_CHOICES as colors } from "./constants";
+import Circle from "../../svgs/circleSVG";
+import { COLOR_CHOICES as colors } from "../constants/constants";
 
 const PlayerColorGrid = ({ handleClick }) => {
   const [colorChoices, updateColorChoices] = useState(colors);
 
-  const updateColorPicked = (color) => {
+  const updateColorPicked = color => {
     handleClick(color);
     updateColorChoices([color]);
   };

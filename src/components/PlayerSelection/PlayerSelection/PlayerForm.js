@@ -1,27 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import FormError from "./FormError";
-import validPlayerNames from "./errorUtil";
-
+import validPlayerNames from "../utils/errorUtil";
+import { PlayerInfoContext } from "../../App";
 // Utilize the confirmation and undo. Once the conditions of playername being filled, colored pick and no errors. Render the submit button.
-const PlayerForm = (props) => {
-  const [player, updatePlayer] = useState("");
+const PlayerForm = props => {
   const [error, updateError] = useState({
     isError: false,
     isReady: false,
     errorHeader: "",
-    errorMessage: "",
+    errorMessage: ""
   });
 
-  const handleChange = (e) => {
-    updatePlayer(e.target.value);
+  const PlayerInfo = useContext(PlayerInfoContext);
+  const { state } = PlayerInfo;
+  const playerName = state[props.player].playerName;
+  const handleChange = e => {
+    const type =
+      props.player === "firstPlayer" ? "updatePlayerOne" : "updatePlayerTwo";
+    PlayerInfo.dispatch({
+      type,
+      payload: e.target.value
+    });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const checkForError = validPlayerNames(player);
+    const checkForError = validPlayerNames(playerName);
     updateError(checkForError);
     if (!checkForError.isError) {
-      props.onSubmit(player);
+      props.onSubmit(playerName);
     }
   };
 
@@ -38,8 +45,7 @@ const PlayerForm = (props) => {
   };
 
   const closeErrorBox = () => updateError({ ...error, isError: false });
-  const renderName = !player.length ? "Player" : player;
-
+  const renderName = !playerName.length ? "Player" : playerName;
   return (
     <form className="ui form" onSubmit={handleSubmit}>
       <div className="equal width fields">
@@ -50,7 +56,7 @@ const PlayerForm = (props) => {
           <input
             type="text"
             placeholder="Player"
-            value={player}
+            value={playerName}
             onChange={handleChange}
             autoComplete="off"
           />

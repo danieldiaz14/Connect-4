@@ -1,6 +1,6 @@
 import React from "react";
 
-const FormError = (props) => {
+const FormError = props => {
   return (
     <div className="ui negative message">
       <i onClick={props.onClose} className="close icon" />

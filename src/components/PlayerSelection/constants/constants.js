@@ -6,5 +6,5 @@ export const COLOR_CHOICES = [
   "green",
   "orange",
   "purple",
-  "brown",
+  "brown"
 ];

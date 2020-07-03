@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Circle from "../svgs/circleSVG";
 
-const Connect4Board = (props) => {
+const Connect4Board = props => {
   const { gameBoard, updateBoard } = props;
   // can create a constant that will be the initial state for playerTurn.
   const [playerTurn, updateTurn] = useState(Math.random() >= 0.5);

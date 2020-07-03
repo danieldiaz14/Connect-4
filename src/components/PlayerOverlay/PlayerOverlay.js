@@ -1,6 +1,6 @@
 import React from "react";
 
-const PlayerOverlay = (props) => {
+const PlayerOverlay = props => {
   const { player1, player2, score1, score2 } = props;
   return (
     <div className="ui segment">

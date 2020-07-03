@@ -1,3 +1,3 @@
-import PlayerSelection from "./PlayerSelection";
+import PlayerVsScreen from "./PlayerVsScreen";
 
-export default PlayerSelection;
+export default PlayerVsScreen;

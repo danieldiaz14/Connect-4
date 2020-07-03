@@ -5,13 +5,13 @@ const errorMessage = (isError = false) => {
   return {
     isError: true,
     errorHeader,
-    errorMessage,
+    errorMessage
   };
 };
 
-const checkForEmptyStrings = (str) => str.length < 1;
+const checkForEmptyStrings = str => str.length < 1;
 
-const isValidPlayerName = (player) => {
+const isValidPlayerName = player => {
   if (checkForEmptyStrings(player)) return errorMessage("empty");
   return errorMessage();
 };
