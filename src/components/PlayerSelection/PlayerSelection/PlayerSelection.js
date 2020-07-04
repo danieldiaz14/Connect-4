@@ -15,6 +15,7 @@ const PlayerSelection = ({ player }) => {
   return (
     <div className="column">
       <PlayerForm onSubmit={handleFormSubmission} player={player} />
+      <div className="ui divider" />
       <PlayerColorGrid handleClick={handleColorPick} player={player} />
     </div>
   );

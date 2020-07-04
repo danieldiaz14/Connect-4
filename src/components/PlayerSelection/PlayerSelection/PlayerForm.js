@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import FormError from "./FormError";
 import validPlayerNames from "../utils/errorUtil";
 import { PlayerInfoContext } from "../../App";
-// Utilize the confirmation and undo. Once the conditions of playername being filled, colored pick and no errors. Render the submit button.
+
 const PlayerForm = props => {
   const [error, updateError] = useState({
     isError: false,
