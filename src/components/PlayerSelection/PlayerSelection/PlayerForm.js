@@ -3,7 +3,7 @@ import FormError from "./FormError";
 import validPlayerNames from "../utils/errorUtil";
 import { PlayerInfoContext } from "../../App";
 
-const PlayerForm = props => {
+const PlayerForm = ({ player, onSubmit, updatePlayer }) => {
   const [error, updateError] = useState({
     isError: false,
     isReady: false,
@@ -12,15 +12,9 @@ const PlayerForm = props => {
   });
 
   const PlayerInfo = useContext(PlayerInfoContext);
-  const { state } = PlayerInfo;
-  const playerName = state[props.player].playerName;
+  const playerName = PlayerInfo.playerState[player].playerName;
   const handleChange = e => {
-    const type =
-      props.player === "firstPlayer" ? "updatePlayerOne" : "updatePlayerTwo";
-    PlayerInfo.dispatch({
-      type,
-      payload: e.target.value
-    });
+    updatePlayer(PlayerInfo, e.target.value);
   };
 
   const handleSubmit = e => {
@@ -28,7 +22,7 @@ const PlayerForm = props => {
     const checkForError = validPlayerNames(playerName);
     updateError(checkForError);
     if (!checkForError.isError) {
-      props.onSubmit(playerName);
+      onSubmit(playerName);
     }
   };
 

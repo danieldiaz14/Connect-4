@@ -1,10 +1,12 @@
 import React, { useReducer } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import GameBoard from "./GameBoard";
-import GameStateReducer, { initialGameState } from "./GameState";
-import PlayerStateReducer, { initalPlayerState } from "./PlayerState";
-import PlayerSelection from "./PlayerSelection";
+//import GameBoard from "./GameBoard";
+import GameStateReducer, { initialGameState } from "../reducers/gameReducer";
+import PlayerStateReducer, {
+  initalPlayerState
+} from "../reducers/playerReducer";
+import PlayerVsScreen from "./PlayerSelection";
 
 export const PlayerInfoContext = React.createContext();
 
@@ -14,7 +16,10 @@ const App = () => {
     initialGameState
   );
 
-  const [state, dispatch] = useReducer(PlayerStateReducer, initalPlayerState);
+  const [playerState, dispatch] = useReducer(
+    PlayerStateReducer,
+    initalPlayerState
+  );
   return (
     <div className="ui container">
       <BrowserRouter>
@@ -23,12 +28,12 @@ const App = () => {
             path="/"
             exact
             render={() => (
-              <PlayerInfoContext.Provider value={{ state, dispatch }}>
-                <PlayerSelection />
+              <PlayerInfoContext.Provider value={{ playerState, dispatch }}>
+                <PlayerVsScreen />
               </PlayerInfoContext.Provider>
             )}
           />
-          <Route
+          {/* <Route
             path="/GameBoard"
             exact
             render={() => (
@@ -37,7 +42,7 @@ const App = () => {
                 updateBoard={updateBoardState}
               />
             )}
-          />
+          /> */}
         </div>
       </BrowserRouter>
     </div>

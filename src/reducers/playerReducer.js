@@ -1,3 +1,13 @@
+import {
+  UPDATE_PLAYER_ONE_NAME,
+  UPDATE_PLAYER_TWO_NAME
+} from "../actions/types";
+
+import {
+  getPlayerOneColor,
+  getPlayerTwoColor
+} from "../selectors/playerSelectors";
+
 export const initalPlayerState = {
   firstPlayer: {
     playerName: "",
@@ -12,18 +22,20 @@ export const initalPlayerState = {
 export default (state, action) => {
   const payload = action.payload;
   switch (action.type) {
-    case "updatePlayerOne":
+    case UPDATE_PLAYER_ONE_NAME:
       return {
         ...state,
         firstPlayer: {
-          playerName: payload
+          playerName: payload,
+          colorPicked: getPlayerOneColor(state)
         }
       };
-    case "updatePlayerTwo":
+    case UPDATE_PLAYER_TWO_NAME:
       return {
         ...state,
         secondPlayer: {
-          playerName: payload
+          playerName: payload,
+          colorPicked: getPlayerTwoColor(state)
         }
       };
     default:
