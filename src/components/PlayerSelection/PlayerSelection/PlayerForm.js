@@ -3,7 +3,7 @@ import FormError from "./FormError";
 import validPlayerNames from "../utils/errorUtil";
 import { PlayerInfoContext } from "../../App";
 
-const PlayerForm = ({ player, onSubmit, updatePlayer }) => {
+const PlayerForm = ({ player, onSubmit, updateName, undoPlayer }) => {
   const [error, updateError] = useState({
     isError: false,
     isReady: false,
@@ -14,7 +14,7 @@ const PlayerForm = ({ player, onSubmit, updatePlayer }) => {
   const PlayerInfo = useContext(PlayerInfoContext);
   const playerName = PlayerInfo.playerState[player].playerName;
   const handleChange = e => {
-    updatePlayer(PlayerInfo, e.target.value);
+    updateName(PlayerInfo, e.target.value);
   };
 
   const handleSubmit = e => {
@@ -24,6 +24,10 @@ const PlayerForm = ({ player, onSubmit, updatePlayer }) => {
     if (!checkForError.isError) {
       onSubmit(playerName);
     }
+  };
+
+  const handleUndo = () => {
+    undoPlayer(PlayerInfo);
   };
 
   const renderErrorMessage = () => {
@@ -59,7 +63,7 @@ const PlayerForm = ({ player, onSubmit, updatePlayer }) => {
       <button className="ui button primary" type="submit">
         Confirm
       </button>
-      <button className="ui button negative" type="button">
+      <button className="ui button negative" type="button" onClick={handleUndo}>
         Undo
       </button>
       {renderErrorMessage()}

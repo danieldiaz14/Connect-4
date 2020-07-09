@@ -1,14 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import PlayerSelection from "./PlayerSelection/PlayerSelection";
-import { updatePlayerOne, updatePlayerTwo } from "../../actions/index";
-const PlayerVsScreen = props => {
+import {
+  updatePlayerOneName,
+  updatePlayerOneColor,
+  undoPlayerOne,
+  updatePlayerTwoName,
+  updatePlayerTwoColor,
+  undoPlayerTwo
+} from "../../actions/index";
+
+const PlayerVsScreen = () => {
   return (
     <div className="ui segment">
       <div className="ui two column very relaxed grid">
-        <PlayerSelection player="firstPlayer" updatePlayer={updatePlayerOne} />
-        <PlayerSelection player="secondPlayer" updatePlayer={updatePlayerTwo} />
+        <PlayerSelection
+          player="firstPlayer"
+          updateName={updatePlayerOneName}
+          updateColor={updatePlayerOneColor}
+          undoPlayer={undoPlayerOne}
+        />
+        <PlayerSelection
+          player="secondPlayer"
+          updateName={updatePlayerTwoName}
+          updateColor={updatePlayerTwoColor}
+          undoPlayer={undoPlayerTwo}
+        />
       </div>
       <div className="ui vertical divider">Vs.</div>
     </div>
