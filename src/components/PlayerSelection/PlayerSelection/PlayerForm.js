@@ -3,6 +3,19 @@ import FormError from "./FormError";
 import validPlayerNames from "../utils/errorUtil";
 import { PlayerInfoContext } from "../../App";
 
+const renderButtons = (check, onClickEvents) => {
+  const { onSubmit, onUndo } = onClickEvents;
+  if (check) {
+    return <div>
+      <button className="ui button primary" type="submit" onClick={onSubmit}>
+        Confirm
+      </button>
+      <button className="ui button negative" type="button" onClick={onUndo}>
+        Undo
+      </button>
+    </div>
+  }
+}
 const PlayerForm = ({ player, onSubmit, updateName, undoPlayer }) => {
   const [error, updateError] = useState({
     isError: false,
@@ -60,12 +73,7 @@ const PlayerForm = ({ player, onSubmit, updateName, undoPlayer }) => {
           />
         </div>
       </div>
-      <button className="ui button primary" type="submit">
-        Confirm
-      </button>
-      <button className="ui button negative" type="button" onClick={handleUndo}>
-        Undo
-      </button>
+      {renderButtons(!!playerName.length, {onSubmit: () => console.log("confirm"), onUndo: handleUndo})}
       {renderErrorMessage()}
     </form>
   );
