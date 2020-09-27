@@ -5,7 +5,7 @@ import PlayerColorGrid from "../PlayerColorGrid/PlayerColorGrid";
 
 const PlayerSelection = ({ player, updateName, updateColor, undoPlayer }) => {
   const handleFormSubmission = formSubmission => {
-    console.log(formSubmission);
+    console.log("pizza");
   };
 
   return (

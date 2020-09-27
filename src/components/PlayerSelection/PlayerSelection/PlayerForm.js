@@ -3,19 +3,23 @@ import FormError from "./FormError";
 import validPlayerNames from "../utils/errorUtil";
 import { PlayerInfoContext } from "../../App";
 
-const renderButtons = (check, onClickEvents) => {
+const renderButtons = (playerState, onClickEvents) => {
   const { onSubmit, onUndo } = onClickEvents;
-  if (check) {
-    return <div>
-      <button className="ui button primary" type="submit" onClick={onSubmit}>
-        Confirm
-      </button>
-      <button className="ui button negative" type="button" onClick={onUndo}>
-        Undo
-      </button>
-    </div>
+  const { playerName, colorPicked } = playerState;
+  const checkNameAndColor = playerName.length > 0 || colorPicked.length < 8;
+  if (checkNameAndColor) {
+    return (
+      <div>
+        <button className="ui button primary" type="submit" onClick={onSubmit}>
+          Confirm
+        </button>
+        <button className="ui button negative" type="button" onClick={onUndo}>
+          Undo
+        </button>
+      </div>
+    );
   }
-}
+};
 const PlayerForm = ({ player, onSubmit, updateName, undoPlayer }) => {
   const [error, updateError] = useState({
     isError: false,
@@ -23,11 +27,10 @@ const PlayerForm = ({ player, onSubmit, updateName, undoPlayer }) => {
     errorHeader: "",
     errorMessage: ""
   });
-
-  const PlayerInfo = useContext(PlayerInfoContext);
-  const playerName = PlayerInfo.playerState[player].playerName;
+  const playerInfo = useContext(PlayerInfoContext);
+  const playerName = playerInfo.playerState[player].playerName;
   const handleChange = e => {
-    updateName(PlayerInfo, e.target.value);
+    updateName(playerInfo, e.target.value);
   };
 
   const handleSubmit = e => {
@@ -40,7 +43,7 @@ const PlayerForm = ({ player, onSubmit, updateName, undoPlayer }) => {
   };
 
   const handleUndo = () => {
-    undoPlayer(PlayerInfo);
+    undoPlayer(playerInfo);
   };
 
   const renderErrorMessage = () => {
@@ -73,7 +76,10 @@ const PlayerForm = ({ player, onSubmit, updateName, undoPlayer }) => {
           />
         </div>
       </div>
-      {renderButtons(!!playerName.length, {onSubmit: () => console.log("confirm"), onUndo: handleUndo})}
+      {renderButtons(playerInfo.playerState[player], {
+        onSubmit: () => console.log("confirm"),
+        onUndo: handleUndo
+      })}
       {renderErrorMessage()}
     </form>
   );

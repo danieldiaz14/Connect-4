@@ -17,11 +17,13 @@ import { COLOR_CHOICES as colors } from "../components/PlayerSelection/constants
 export const initalPlayerState = {
   firstPlayer: {
     playerName: "",
-    colorPicked: [...colors]
+    colorPicked: [...colors],
+    isReady: false
   },
   secondPlayer: {
     playerName: "",
-    colorPicked: [...colors]
+    colorPicked: [...colors],
+    isReady: false
   }
 };
 
