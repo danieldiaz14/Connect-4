@@ -1,6 +1,9 @@
 const canvas = document.getElementById("canvas");
+
 const context = canvas.getContext('2d');
 
+context.fillStyle = "#3a74d1";
+context.fillRect(0, 0, canvas.width, canvas.height);
 let turnColor = document.getElementById('active');
 let turn = true;
 let gameBoard = matrix();
@@ -10,6 +13,7 @@ let score2 = 0;
 turnColor.style.color = "#e22006";
 
 canvas.addEventListener('click', function(event) {
+    
     let x = event.pageX - 0;
     let y = event.pageY - 0;
     let handX = 0;
@@ -102,6 +106,7 @@ const validateWinner = data => {
     return -1
 }
 
+// should probably decide which type of data.
 const winner = () => {
     const playerValue = validateWinner(gameBoard);
     if (playerValue > -1) {
@@ -116,7 +121,7 @@ const winner = () => {
 function drawCircle(x, y, color) {
     context.beginPath();
     context.arc(x, y, 40, 0, 2*Math.PI);
-    if(color == 0) {
+    if (color == 0) {
         context.stroke();
         return;
     }
@@ -159,6 +164,7 @@ function matrix() {
     return board;
 }
 
+// Why does this exist ?9
 function reset() {
     return [5,5,5,5,5,5,5];
 }
@@ -168,10 +174,11 @@ function updateValue(player, value1, value2) {
 } // update value function. Allows us to change values on canvas to manipulate state of the game.
 function redo() {
     let textWinner;
-    if(turn == true) {
+    if (turn == true) {
         score1++;
         gameBoard = matrix();
         counters = reset();
+        console.log(gameBoard, counters);
         textWinner = "It's your turn red";
     } else {
         score2++;
@@ -179,13 +186,15 @@ function redo() {
         counters = reset();
         textWinner = "It's your turn yellow";
     }
+
     document.getElementById('active').innerText = textWinner;
 }
+
 function draw() {
-    context.fillStyle = "#3a74d1";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    
     board(gameBoard);
     updateValue('score', score1, score2);
     requestAnimationFrame(draw);
 }
+
 draw();

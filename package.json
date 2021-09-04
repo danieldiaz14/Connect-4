@@ -1,0 +1,23 @@
+{
+  "name": "Connect-4",
+  "version": "1.0.0",
+  "description": "Connect-4",
+  "main": "index.js",
+  "dependencies": {
+    "react-scripts": "^4.0.3"
+  },
+  "scripts": {
+    "start": "firefox ./index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danieldiaz14/Connect-4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danieldiaz14/Connect-4/issues"
+  },
+  "homepage": "https://github.com/danieldiaz14/Connect-4#readme"
+}
