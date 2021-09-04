@@ -1,5 +1,31 @@
+.container {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
+
+.item {
+    flex-shrink: inherit;
+}
+
+.ui {
+    display: block;
+}
+
 .flex-box {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-self: auto;
+}
+
+h1, h2 {
+    font-family: 'Indie Flower', 'Open Sans', sans-serif;
+}
+
+#play {
+    height: 40px;
+    width: 70px;
 }

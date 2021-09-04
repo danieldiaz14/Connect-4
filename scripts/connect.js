@@ -1,12 +1,21 @@
-const canvas = document.getElementById("canvas");
+const canvas = createCanvas();
 
 const context = canvas.getContext('2d');
+const utils = new GameUtils();
+let mouseX = null;
+let mouseY = null;
+
+// document.getRootNode().addEventListener('mouseenter', e => {
+//     mouseX = e.pageX;
+//     mouseY = e.pageY;
+// });
+console.log(document.getRootNode())
 
 context.fillStyle = "#3a74d1";
 context.fillRect(0, 0, canvas.width, canvas.height);
-let turnColor = document.getElementById('active');
+let turnColor = document.querySelector('.activePlayer');
 let turn = true;
-let gameBoard = matrix();
+let gameBoard = utils.createMatrix();
 let counters = [5,5,5,5,5,5,5];
 let score1 = 0;
 let score2 = 0;
@@ -46,7 +55,7 @@ canvas.addEventListener('click', function(event) {
 
 
 function updaterow(data, column) {
-    if(data[counters[column]][column] == 0) {
+    if (data[counters[column]][column] == 0) {
        
         if (turn === true) {
             data[counters[column]][column] = 1;
@@ -64,54 +73,12 @@ function updaterow(data, column) {
     }
 }
 
-const validateWinner = data => {
-    const height = data.length;
-    const width = data[0].length;
-    const empty_slot = 0;
-    for (let r = 0; r < height; r++) {
-        for (let c = 0; c < width; c++) {
-            const player = data[r][c];
-            if (player === empty_slot) continue;
-            if (c + 3 < width) {
-                if (r + 3 < height) {
-                    // checks diagonal down right
-                    if (
-                        player === data[r+1][c+1] &&
-                        player === data[r+2][c+2] &&
-                        player === data[r+3][c+3] 
-                    ) return player;
-                }
-                if (r - 3 >= 0) {
-                    if (
-                        player === data[r-1][c+1] &&
-                        player === data[r-2][c+2] &&
-                        player === data[r-3][c+3]
-                    ) return player;
-                }
-                if (
-                    player === data[r][c+1] &&
-                    player === data[r][c+2] &&
-                    player === data[r][c+3] 
-                ) return player;
-            }
-            if (r + 3 < height) {
-                if (
-                    player === data[r+1][c] &&
-                    player === data[r+2][c] &&
-                    player === data[r+3][c] 
-                ) return player;
-            }
-        }
-    }
-    return -1
-}
-
 // should probably decide which type of data.
 const winner = () => {
-    const playerValue = validateWinner(gameBoard);
+    const playerValue = utils.checkWinner(gameBoard);
     if (playerValue > -1) {
         const playerWon = playerValue === 1 ? "Player Red" : "Player Yellow";
-        document.getElementById('active').innerText = `${playerWon} has won!`;
+        document.querySelector('#activePlayer').innerText = `${playerWon} has won!`;
         turnColor.style.color = playerWon === "Player Red" ? "#e22006" : "#fffa07";
         return playerWon;
     }
@@ -129,6 +96,7 @@ function drawCircle(x, y, color) {
     context.fill();
     context.stroke();
 }
+
 function board(input) {
     let x = 0;
     let y = 0;
@@ -156,14 +124,6 @@ function board(input) {
     }
 }
 
-function matrix() {
-    let board = []; 
-    for(let x = 0; x < 6; x+=1) {
-        board.push([0,0,0,0,0,0,0]);
-    }
-    return board;
-}
-
 // Why does this exist ?9
 function reset() {
     return [5,5,5,5,5,5,5];
@@ -176,18 +136,17 @@ function redo() {
     let textWinner;
     if (turn == true) {
         score1++;
-        gameBoard = matrix();
+        gameBoard = utils.createMatrix();
         counters = reset();
-        console.log(gameBoard, counters);
         textWinner = "It's your turn red";
     } else {
         score2++;
-        gameBoard = matrix();
+        gameBoard = utils.createMatrix();
         counters = reset();
         textWinner = "It's your turn yellow";
     }
 
-    document.getElementById('active').innerText = textWinner;
+    document.getElementsByClassName('activePlayer').innerText = textWinner;
 }
 
 function draw() {
@@ -195,6 +154,7 @@ function draw() {
     board(gameBoard);
     updateValue('score', score1, score2);
     requestAnimationFrame(draw);
+    console.log(mouseX, mouseY);
 }
 
 draw();

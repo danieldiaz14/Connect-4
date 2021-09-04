@@ -2,23 +2,29 @@
 <html>
     <head>
         <title>Connect 4!</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Open+Sans&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="./styles/index.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
         <meta charset="utf8">
     </head>
     <body>
         <div class="container">
-            <div class="flex-box">
-                <h2 class="ui floated header">
-                    <div id="active">It's your turn!</div>
-                </h2>
-                <button id="play" onclick="redo()">Play Again</button>
-                <div id="scoreBoard">
-                    <p id="score"></p>
+            <div class="ui">
+                <div class="flex-box">
+                    <h2 class="activePlayer">
+                        It is your turn!
+                    </h2>
+                    <button id="play" onclick="redo()">Play Again</button>
+                    <div id="scoreBoard">
+                        <h1 id="score"></h2>
+                    </div>
                 </div>
             </div>
-            <canvas id="canvas" width="1020" height="640"></canvas>
+            <canvas id="canvas"></canvas>
         </div>
+        <script src="./scripts/utils.js"></script>
+        <script src="./scripts/createCanvas.js"></script>
         <script src="./scripts/connect.js"></script>
     </body>
 </html>
