@@ -1,9 +1,5 @@
 class GameUtils {
 
-    constructor() {
-        this.gameBoardLength = -1;
-    }
-
     checkWinner(gameBoard) {
         // expects the gameBoard to be passed in as an arg
         const height = gameBoard.length;

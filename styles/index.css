@@ -29,6 +29,12 @@ h1, h2, button {
     font-family: 'Indie Flower', 'Open Sans', sans-serif;
 }
 
+.activePlayer {
+    height: 40px;
+    width: fit-content;
+    background-color: black;
+}
+
 #play {
     border: none;
     background-color: transparent;
@@ -37,10 +43,11 @@ h1, h2, button {
     height: 40px;
     width: 70px;
     background-color: green;
-    color: red;
+    font-size: medium;
+    color: white;
     border-radius: 8px;
+    margin-top: 1.5em;
     box-shadow: 0 3px 5px rgba(0, 0, 0 , 0.18);
-
     @media screen and (-ms-high-contrast: active) {
         border: 2px solid pink;
         
