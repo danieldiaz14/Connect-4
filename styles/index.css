@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 .container {
     margin: auto;
     width: 50%;
@@ -21,11 +25,28 @@
     align-self: auto;
 }
 
-h1, h2 {
+h1, h2, button {
     font-family: 'Indie Flower', 'Open Sans', sans-serif;
 }
 
 #play {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
     height: 40px;
     width: 70px;
+    background-color: green;
+    color: red;
+    border-radius: 8px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0 , 0.18);
+
+    @media screen and (-ms-high-contrast: active) {
+        border: 2px solid pink;
+        
+    }
+}
+
+#play:hover {
+    background-color: gray;
 }

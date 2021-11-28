@@ -4,7 +4,7 @@
   "description": "Connect-4",
   "main": "index.js",
   "dependencies": {
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^3.4.4"
   },
   "scripts": {
     "start": "snowpack dev",
@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/danieldiaz14/Connect-4#readme",
   "devDependencies": {
-    "snowpack": "^3.8.8"
+    "snowpack": "^3.7.1"
   }
 }

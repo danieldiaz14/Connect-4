@@ -15,6 +15,8 @@
                     <h2 class="activePlayer">
                         It is your turn!
                     </h2>
+                    <h2 id="x">X: value</h2>
+                    <h2 id="y">Y: value</h2>
                     <button id="play" onclick="redo()">Play Again</button>
                     <div id="scoreBoard">
                         <h1 id="score"></h2>
@@ -23,6 +25,36 @@
             </div>
             <canvas id="canvas"></canvas>
         </div>
+        <script>
+            (function() {
+    document.onmousemove = handleMouseMove;
+    function handleMouseMove(event) {
+        var eventDoc, doc, body;
+
+        event = event || window.event; // IE-ism
+
+        // If pageX/Y aren't available and clientX/Y are,
+        // calculate pageX/Y - logic taken from jQuery.
+        // (This is to support old IE)
+        if (event.pageX == null && event.clientX != null) {
+            eventDoc = (event.target && event.target.ownerDocument) || document;
+            doc = eventDoc.documentElement;
+            body = eventDoc.body;
+
+            event.pageX = event.clientX +
+              (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
+              (doc && doc.clientLeft || body && body.clientLeft || 0);
+            event.pageY = event.clientY +
+              (doc && doc.scrollTop  || body && body.scrollTop  || 0) -
+              (doc && doc.clientTop  || body && body.clientTop  || 0 );
+        }
+
+        // Use event.pageX / event.pageY here
+        document.getElementById('x').innerText = event.pageX;
+        document.getElementById('y').innerText = event.pageY;
+    }
+})();
+        </script>
         <script src="./scripts/utils.js"></script>
         <script src="./scripts/createCanvas.js"></script>
         <script src="./scripts/connect.js"></script>

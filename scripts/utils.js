@@ -1,17 +1,23 @@
 class GameUtils {
 
+    constructor() {
+        this.gameBoardLength = -1;
+    }
+
     checkWinner(gameBoard) {
         // expects the gameBoard to be passed in as an arg
         const height = gameBoard.length;
         const width = gameBoard[0].length;
-        const empty_slot = 0;
+        const EMPTY_SLOT = 0;
         for (let r = 0; r < height; r++) {
 
             for (let c = 0 ; c < width; c++) {
 
+                // currentCircle refers to a circle in the board.
+                // [[0]]
                 const currentCircle = gameBoard[r][c];
 
-                if (currentCircle === empty_slot) continue;
+                if (currentCircle === EMPTY_SLOT) continue;
 
                 // checks if we have space to the right ->
                 if (c + 3 < width) {
@@ -49,7 +55,6 @@ class GameUtils {
 
     createMatrix() {
         const matrix = [];
-
         for (let i = 0; i < 6; i++) {
             matrix.push(
                 [
@@ -62,6 +67,7 @@ class GameUtils {
 
     randomBool() {
         // This returns a yes or no at 50% chance to determine who starts
-        return Math.random() < 0.5;
+        const theBool = Math.random() < 0.5;
+        return theBool;
     }
 }
