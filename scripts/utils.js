@@ -50,7 +50,7 @@ class GameUtils {
     }
 
     createMatrix() {
-        const matrix = [];
+        const matrix = new Array();
         for (let i = 0; i < 6; i++) {
             matrix.push(
                 [
@@ -63,7 +63,7 @@ class GameUtils {
 
     randomBool() {
         // This returns a yes or no at 50% chance to determine who starts
-        const theBool = Math.random() < 0.5;
-        return theBool;
+        const randomFiftyFity = Math.random() < 0.5;
+        return randomFiftyFity;
     }
 }

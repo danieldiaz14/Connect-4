@@ -57,3 +57,7 @@ h1, h2, button {
 #play:hover {
     background-color: gray;
 }
+
+#dev {
+    font-size: large;
+}
