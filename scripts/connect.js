@@ -6,13 +6,14 @@ setupContext(context);
 
 const RED = "#e22006";
 const YELLOW = "#fffa07";
-let turnColor = document.querySelector('.activePlayer');
 let devMode = false;
 let turn = utils.randomBool(); // if less 0.5 its red otherwise its yellow
-turnColor.style.color = turn ? RED : YELLOW;
+
+updateActivePlayerColor(turn ? RED : YELLOW);
 let gameBoard = utils.createMatrix();
 let score1 = 0;
 let score2 = 0;
+let isWinnerState = false;
 let drawOnce = false;
 
 canvas.addEventListener('mousemove', function(e) {
@@ -42,46 +43,78 @@ canvas.addEventListener('click', function(event) {
 
 function updaterow(gameBoardMatrix, column) {
 
-    const isYellowTurn = turn; // if this is true its yellow's turn...
+    const isRedTurn = turn; // if this is true it is Red's turn
     const rowMax = gameBoardMatrix.length - 1;
 
     for (let row = rowMax; row >= 0; row--) {
         const currentCircleValue = gameBoardMatrix[row][column];
 
         const isCurrentEmpty = currentCircleValue === 0;
-
-        if (isCurrentEmpty) {
+        
+        if (!isWinnerState) {
+            if (isCurrentEmpty) {
             
-            if (isYellowTurn) {
-                gameBoardMatrix[row][column] = 1;
-                turnColor.style.color = RED;
-                const checkForWinner = winner();
-            } else {
-                gameBoardMatrix[row][column] = 2;
-                turnColor.style.color = YELLOW;
-                const checkForWinner = winner();
+                if (isRedTurn) {
+                    gameBoardMatrix[row][column] = 1;
+                    updateActivePlayerColor(YELLOW);
+                    checkForWinner();
+                } else {
+                    gameBoardMatrix[row][column] = 2;
+                    updateActivePlayerColor(RED);
+                    checkForWinner();
+                }
+                turn = !turn;
+                break;
             }
-            turn = !turn;
-            break;
         }
     }
 }
 
-// should probably decide which type of data.
-const winner = () => {
-    const playerValue = utils.checkWinner(gameBoard);
-    const winnerFound = playerValue !== -1;
-
-    if (winnerFound) {
-        const playerWon = playerValue === 1 ? "Player Red" : "Player Yellow";
-        document.querySelector('.activePlayer').innerText = `${playerWon} has won!`;
-        turnColor.style.color = playerWon === "Player Red" ? RED : YELLOW;
-        return playerWon;
-    }
-
-    return false;
+function updateActivePlayerText(text) {
+    document.querySelector('.activePlayer').innerText = text;
 }
 
+function updateActivePlayerColor(color) {
+    document.querySelector('.activePlayer').style.color = color;
+}
+
+function updateScore(winnerCellValue) {
+    const scoreRef = "#score";
+    const isRed = winnerCellValue === 1;
+    
+    if (isRed) {
+        score1++;
+    } else {
+        score2++;
+    }
+
+    document.querySelector(scoreRef).innerText = `${score1}:${score2}`;
+}
+
+function updateWinnerState(specificState=null) { // toggles the checkForWinner state
+    if (specificState === null) {
+        isWinnerState = !isWinnerState;
+    } else {
+        isWinnerState = specificState;
+    }
+}
+
+// should probably decide which type of data.
+const checkForWinner = () => {
+    if (!isWinnerState) { // not current has a winner...
+        const playerValue = utils.checkWinner(gameBoard);
+        const winnerFound = playerValue !== -1;
+
+        if (winnerFound) {
+            const playerWon = playerValue === 1 ? "Player Red" : "Player Yellow";
+            const winnerColor = playerWon === "Player Red" ? RED : YELLOW;
+            updateActivePlayerText(`${playerWon} has won!`);
+            updateActivePlayerColor(winnerColor);
+            updateScore(playerValue);
+            updateWinnerState();
+        }
+    }
+}
 
 function drawCircle(x, y, color = 0) { // x and y are the center point of the circle.
     const { PI } = Math;
@@ -133,21 +166,19 @@ function updateBoard(gameMatrix) { // 42 sub rectangles in canvas
     const APPROX_RECT_WIDTH = 145.71;
     const APPROX_RECT_HEIGHT = 106.66;
     const gameBoardLength = gameMatrix.length;
-    const gameBoardWidth = gameMatrix[0].length;
+    const gameBoardRow = gameMatrix[0];
+    const gameBoardWidth = gameBoardRow.length;
 
     if (devMode) {
-        for (let i = 0; i <= 6; i++) { // used for development
-            const width = 145.71;
-            const height = CANVASHEIGHT;
-            const startPos = 0 + (APPROX_RECT_WIDTH * i);
-            drawRect(startPos, 0, width, height);
+
+        for (column in gameBoardRow) {
+            const startingX = 0 + (APPROX_RECT_WIDTH * +column);
+            drawRect(startingX, 0, APPROX_RECT_WIDTH, CANVASHEIGHT);
         }
-    
-        for (let i = 0; i <= 5; i++) { // used for development
-            const height = APPROX_RECT_HEIGHT;
-            const width = CANVASWIDTH;
-            const startPos = 0 + (APPROX_RECT_HEIGHT * i);
-            drawRect(0, startPos, width, height, 'green');
+
+        for(row in gameMatrix) {
+            const startingX = 0 + (APPROX_RECT_HEIGHT * +row);
+            drawRect(0, startingX, CANVASWIDTH, APPROX_RECT_HEIGHT, 'green');
         }
     }
 
@@ -170,30 +201,23 @@ function updateBoard(gameMatrix) { // 42 sub rectangles in canvas
     }
 }
 
-function updateValue(player, value1, value2) {
-    document.getElementById(player).innerText = `${value1}:${value2}`;
-} // update value function. Allows us to change values on canvas to manipulate state of the game.
-
 function redo() {
-    let textWinner;
-    const isYellowTurn = turn;
+    const isRedTurn = turn;
 
-    if (isYellowTurn) {
-        score1++;
-        gameBoard = utils.createMatrix();
-        textWinner = "It is your turn red";
+    if (isRedTurn) {
+        updateActivePlayerColor(YELLOW);
     } else {
-        score2++;
-        gameBoard = utils.createMatrix();
-        textWinner = "It is your turn yellow";
+        updateActivePlayerColor(RED);
     }
 
-    document.querySelector('.activePlayer').innerText = textWinner;
+    gameBoard = utils.createMatrix();
+    turn = !turn;
+    updateActivePlayerText("It is your turn!");
+    updateWinnerState(false);
 }
 
 function draw() {
     updateBoard(gameBoard); // updates board state...
-    updateValue('score', score1, score2);
     requestAnimationFrame(draw);
 }
 

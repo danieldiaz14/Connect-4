@@ -33,6 +33,7 @@ h1, h2, button {
     height: 40px;
     width: fit-content;
     background-color: black;
+    border-radius: 5% 15%;
 }
 
 #play {
