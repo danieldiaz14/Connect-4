@@ -11,7 +11,6 @@ let devMode = false;
 let turn = utils.randomBool(); // if less 0.5 its red otherwise its yellow
 turnColor.style.color = turn ? RED : YELLOW;
 let gameBoard = utils.createMatrix();
-let counters = [5,5,5,5,5,5,5];
 let score1 = 0;
 let score2 = 0;
 let drawOnce = false;
@@ -19,7 +18,7 @@ let drawOnce = false;
 canvas.addEventListener('mousemove', function(e) {
     document.getElementById('x').innerText = e.pageX - 770; // offset 770 because I want to keep track of within the canvas itself 770 is the 0 point in the canvas
     document.getElementById('y').innerText = e.pageY - 309;
-})
+});
 
 canvas.addEventListener('click', function(event) {
     
@@ -30,32 +29,40 @@ canvas.addEventListener('click', function(event) {
     let x = event.pageX - canvasXStart;
 
     for (let i = 0; i <= 6; i++) {
-        let start = (APPROX_RECT_WIDTH * i);
-        let end = (APPROX_RECT_WIDTH * (i+1));
-        if (x >= start && x <= end) {
+        const start = (APPROX_RECT_WIDTH * i);
+        const end = (APPROX_RECT_WIDTH * (i+1));
+        const isWithinRectBounds = x >= start && x <= end; 
+        
+        if (isWithinRectBounds) {
             updaterow(gameBoard, i);
         }
     }
   }, false);
 
 
-function updaterow(data, column) {
-    const isYellowTurn = turn; // if this is true its yellow's turn...
+function updaterow(gameBoardMatrix, column) {
 
-    if (data[counters[column]][column] == 0) {
-       
-        if (isYellowTurn) {
-            data[counters[column]][column] = 1;
-            turnColor.style.color = YELLOW;
-            counters[column]--;
-            const checkForWinner = winner();
-            if (!checkForWinner) turn = false;
-        } else {
-            data[counters[column]][column] = 2;
-            turnColor.style.color = YELLOW;
-            counters[column]--;
-            const checkForWinner = winner();
-            if (!checkForWinner) turn = true;
+    const isYellowTurn = turn; // if this is true its yellow's turn...
+    const rowMax = gameBoardMatrix.length - 1;
+
+    for (let row = rowMax; row >= 0; row--) {
+        const currentCircleValue = gameBoardMatrix[row][column];
+
+        const isCurrentEmpty = currentCircleValue === 0;
+
+        if (isCurrentEmpty) {
+            
+            if (isYellowTurn) {
+                gameBoardMatrix[row][column] = 1;
+                turnColor.style.color = RED;
+                const checkForWinner = winner();
+            } else {
+                gameBoardMatrix[row][column] = 2;
+                turnColor.style.color = YELLOW;
+                const checkForWinner = winner();
+            }
+            turn = !turn;
+            break;
         }
     }
 }
@@ -63,12 +70,15 @@ function updaterow(data, column) {
 // should probably decide which type of data.
 const winner = () => {
     const playerValue = utils.checkWinner(gameBoard);
-    if (playerValue !== -1) {
+    const winnerFound = playerValue !== -1;
+
+    if (winnerFound) {
         const playerWon = playerValue === 1 ? "Player Red" : "Player Yellow";
         document.querySelector('.activePlayer').innerText = `${playerWon} has won!`;
         turnColor.style.color = playerWon === "Player Red" ? RED : YELLOW;
         return playerWon;
     }
+
     return false;
 }
 
@@ -78,11 +88,12 @@ function drawCircle(x, y, color = 0) { // x and y are the center point of the ci
     const RADIUS = 40;
     const STARTANGLE = 0;
     const ENDANGLE = (2 * PI);
+    const isEmpty = color === 0;
     context.beginPath();
     context.arc(x, y, RADIUS, STARTANGLE, ENDANGLE); // x - arc's center, y - arc's center , radius, startAngle(in radians), end angle in radius 0-360 is a full circle.
     context.lineWidth = 4;
 
-    if (color === 0) {
+    if (isEmpty) {
         context.fillStyle = 'white';
     } else {
         context.fillStyle = color;
@@ -99,11 +110,16 @@ function drawRect(x, y, width, height, color=null) {
     context.beginPath();
     context.strokeStyle = color === null ? 'black' : color; // color be legit.
     context.strokeRect(x, y, width, height);
+    context.closePath();
 }
 
 function enableDevMode() { // draws rectangles to make development easier
     devMode = true
     document.getElementById("dev").innerText = "Developer Mode Enabled!";
+}
+
+function setupBoard() {
+
 }
 
 // main function!
@@ -116,6 +132,8 @@ function updateBoard(gameMatrix) { // 42 sub rectangles in canvas
     const CANVASWIDTH = 1020;
     const APPROX_RECT_WIDTH = 145.71;
     const APPROX_RECT_HEIGHT = 106.66;
+    const gameBoardLength = gameMatrix.length;
+    const gameBoardWidth = gameMatrix[0].length;
 
     if (devMode) {
         for (let i = 0; i <= 6; i++) { // used for development
@@ -133,10 +151,10 @@ function updateBoard(gameMatrix) { // 42 sub rectangles in canvas
         }
     }
 
-    for (let i = 0; i <= 5; i++) { // iterate over the rows
+    for (let i = 0; i < gameBoardLength; i++) { // iterate over the rows
         const y1 = 106.66 * i; // the height of th rectangle the circle is in is 106.66 multiple that by the index
         const y2 = 106.66 * (i+1);
-        for (let j = 0; j <= 6; j++) {
+        for (let j = 0; j < gameBoardWidth; j++) {
             const x1 = 145.71 * j;
             const x2 = 145.71 * (j+1);
             const xCenter = (x1 + x2) / 2; // calculates the center of the rect by summing x1 and x2 and dividing by 2
@@ -152,12 +170,6 @@ function updateBoard(gameMatrix) { // 42 sub rectangles in canvas
     }
 }
 
-// this function was used to keep track of how many empty slots are left. A better solution can easily be made...
-function reset() {
-    const resetCounter = new Array(7);
-    return resetCounter.fill(5);
-}
-
 function updateValue(player, value1, value2) {
     document.getElementById(player).innerText = `${value1}:${value2}`;
 } // update value function. Allows us to change values on canvas to manipulate state of the game.
@@ -169,13 +181,11 @@ function redo() {
     if (isYellowTurn) {
         score1++;
         gameBoard = utils.createMatrix();
-        counters = reset();
-        textWinner = "It\'s your turn red";
+        textWinner = "It is your turn red";
     } else {
         score2++;
         gameBoard = utils.createMatrix();
-        counters = reset();
-        textWinner = "It\'s your turn yellow";
+        textWinner = "It is your turn yellow";
     }
 
     document.querySelector('.activePlayer').innerText = textWinner;

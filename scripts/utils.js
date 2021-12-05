@@ -13,7 +13,9 @@ class GameUtils {
                 // [[0]]
                 const currentCircle = gameBoard[r][c];
 
-                if (currentCircle === EMPTY_SLOT) continue;
+                const IS_EMPTY = currentCircle === EMPTY_SLOT;
+
+                if (IS_EMPTY) continue;
 
                 // checks if we have space to the right ->
                 if (c + 3 < width) {
@@ -35,7 +37,15 @@ class GameUtils {
                             currentCircle === gameBoard[r-3][c+3] 
                         ) return currentCircle;
                     }
+
+                    // check horizontally
+                    if (
+                        currentCircle === gameBoard[r][c+1] &&
+                        currentCircle === gameBoard[r][c+2] &&
+                        currentCircle === gameBoard[r][c+3] 
+                    ) return currentCircle;
                 }
+                
                 // this is checking below
                 if (r + 3 < height) {
                     if (
@@ -46,17 +56,16 @@ class GameUtils {
                 }
             }
         }
+        
         return -1;
     }
 
     createMatrix() {
         const matrix = new Array();
         for (let i = 0; i < 6; i++) {
-            matrix.push(
-                [
-                    0,0,0,0,0,0,0
-                ]
-            )
+            const row = new Array(7);
+            row.fill(0);
+            matrix.push(row)
         }
         return matrix;
     }
