@@ -1,36 +1,36 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <title>Connect 4!</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Open+Sans&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="./styles/index.css">
-        <meta charset="utf8">
-    </head>
-    <body>
-        <div class="container">
-            <div class="ui">
-                <div class="flex-box">
-                    <h2 class="activePlayer">
-                        It is your turn!
-                    </h2>
-                    <h2 id="x">X: value</h2>
-                    <h2 id="y">Y: value</h2>
-                    <button id="play" onclick="redo()">Play Again</button>
-                    <button id="dev" onclick="enableDevMode()">Enable Developer Mode: false</button>
-                    <div id="scoreBoard">
-                        <h1 id="score">0:0</h2>
-                    </div>
-                </div>
-            </div>
-            <canvas id="canvas"></canvas>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Connect 4!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/index.css" />
+    <meta charset="utf8" />
+    <meta name="viewport" content="width=device-width, intial-scale=1" />
+    <meta name="description" content="Connect 4" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="ui">
+        <div class="flex-box">
+          <h2 class="activePlayer">It is your turn!</h2>
+          <button class="navButton" id="play">Play Again</button>
+          <div class="devMode navButton">
+            <button id="dev" class="navButton">Dev</button>
+          </div>
+          <h2 class="navButton">Pause</h2>
+          <div id="scoreBoard">
+            <h1 id="score">0:0</h1>
+          </div>
         </div>
-        <script>
-          
-        </script>
-        <script src="./scripts/utils.js"></script>
-        <script src="./scripts/createCanvas.js"></script>
-        <script src="./scripts/connect.js"></script>
-    </body>
+      </div>
+      <h3 id="notification">Shouldn't be able to see this.</h3>
+      <canvas id="canvas"></canvas>
+    </div>
+    <script type="module" src="./scripts/connect.js"></script>
+  </body>
 </html>
