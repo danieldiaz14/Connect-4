@@ -1,0 +1,25 @@
+{
+  "name": "Connect-4",
+  "version": "1.0.0",
+  "description": "Connect-4",
+  "main": "index.js",
+  "scripts": {
+    "start": "snowpack dev",
+    "build": "snowpack build",
+    "pretty": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danieldiaz14/Connect-4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danieldiaz14/Connect-4/issues"
+  },
+  "homepage": "https://github.com/danieldiaz14/Connect-4#readme",
+  "devDependencies": {
+    "snowpack": "^3.7.1"
+  }
+}
