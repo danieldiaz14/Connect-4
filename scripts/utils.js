@@ -1,10 +1,80 @@
 class GameUtils {
+  constructor() {
+    this.EMPTY_SLOT = 0;
+    this.WINNER_VALUE = 3;
+  }
+
+  bot(gameBoard, updateRow, wipeHovers) {
+    // dumb bot
+    const botValue = 2; // for now bot is yellow
+    const rowMax = gameBoard.length - 1;
+    const colMax = gameBoard[0].length;
+    let isBoardEmpty = true;
+
+    // iterate the board backwards vertically!
+
+    // check if the firstRow is empty
+    for (let circle of gameBoard[rowMax]) {
+      if (+circle !== 0) {
+        isBoardEmpty = false;
+        break;
+      }
+    }
+    // if bot is going first and the board is empty pick a random starting point.
+    if (isBoardEmpty) {
+      const randomColumn = this.randomIntFromInterval(0, 6);
+      updateRow(gameBoard, randomColumn);
+      return;
+    }
+    wipeHovers(gameBoard);
+    for (let row = rowMax; row >= 0; row--) {
+      for (let col = 0; col < colMax; col++) {
+        const currentCircle = gameBoard[row][col];
+        const IS_BOT_VALUE = currentCircle === botValue;
+        if (!IS_BOT_VALUE) continue;
+
+        const hasHorizontalSpaceAhead = col + 3 <= colMax;
+        const hasHorizontalSpaceBehind = col - 3 >= 0;
+        const hasVerticalSpaceAbove = row - 3 >= 0;
+
+        if (hasHorizontalSpaceAhead) {
+          for (let j = col + 1; j < colMax; j++) {
+            const nextCircle = gameBoard[row][j];
+            if (nextCircle === this.EMPTY_SLOT) {
+              updateRow(gameBoard, j);
+              return;
+            }
+          }
+        }
+
+        if (hasHorizontalSpaceBehind) {
+          for (let j = col - 1; j >= 0; j--) {
+            const nextCircle = gameBoard[row][j];
+            if (nextCircle === this.EMPTY_SLOT) {
+              updateRow(gameBoard, j);
+              return;
+            }
+          }
+        }
+
+        if (hasVerticalSpaceAbove) {
+          for (let j = row - 1; j >= 0; j--) {
+            const nextCircle = gameBoard[j][col];
+            if (nextCircle === this.EMPTY_SLOT) {
+              updateRow(gameBoard, col);
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+
   checkWinner(gameBoard) {
     // expects the gameBoard to be passed in as an arg
+    const { EMPTY_SLOT, WINNER_VALUE } = this;
     const height = gameBoard.length;
     const width = gameBoard[0].length;
-    const EMPTY_SLOT = 0;
-    const WINNER_VALUE = 3;
     for (let r = 0; r < height; r++) {
       for (let c = 0; c < width; c++) {
         // currentCircle refers to a circle in the board.
@@ -92,7 +162,8 @@ class GameUtils {
     return matrix;
   }
 
-  fastLog(toLog) { // doesn't lazy print object references in console
+  fastLog(toLog) {
+    // doesn't lazy print object references in console
     console.log(JSON.stringify(toLog));
   }
   // two methods below are used to create an ai
@@ -136,6 +207,12 @@ class GameUtils {
     // This returns a yes or no at 50% chance to determine who starts
     const randomFiftyFity = Math.random() < 0.5;
     return randomFiftyFity;
+  }
+
+  randomIntFromInterval(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   static_eval(position) {}
