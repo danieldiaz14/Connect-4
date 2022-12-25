@@ -2,9 +2,9 @@
   "name": "Connect-4",
   "private": true,
   "version": "1.0.0",
-  "description": "Connect-4",
   "type": "module",
-  "main": "index.js",
+  "description": "Connect-4",
+  "main": "./src/public/index.html",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
