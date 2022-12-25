@@ -1,3 +1,4 @@
+import Bot from "./Bot";
 import { createCanvas, setupContext } from "./createCanvas";
 import GameUtils from "./utils";
 
@@ -8,12 +9,14 @@ const utils = new GameUtils();
 setupContext(context);
 
 const RED = "#ff1e00";
-const TRAN_RED = "#ffaca1";
+const HOVER_RED = "#ffaca1";
 const YELLOW = "#fffa07";
-const TRAN_YELLOW = "#fffda1";
+const HOVER_YELLOW = "#fffda1";
 let devMode = false;
-let turn = utils.randomBool(); // if less 0.5 its red otherwise its yellow
+let botEnabled = true;
+let turn = false; // arbitrarily picking yellow to start
 let lastKnownHover = null;
+const bot = botEnabled ? new Bot() : null;
 updateActivePlayerColor(turn ? RED : YELLOW);
 
 let gameBoard = utils.createMatrix();
@@ -44,7 +47,6 @@ canvas.addEventListener("mousemove", function (e) {
       hoverUpdateRow(gameBoard, i);
     }
   }
-
 });
 
 canvas.addEventListener("mouseout", (e) => {
@@ -62,6 +64,10 @@ canvas.addEventListener(
     const canvasXStart = spaceLeftOfCanvas;
     const APPROX_RECT_WIDTH = 145.71; // 1020 / 7 = about 145.71
     let x = event.pageX - canvasXStart;
+
+    if (botEnabled) {
+      if (turn === false) return;
+    }
 
     for (let i = 0; i <= 6; i++) {
       const start = APPROX_RECT_WIDTH * i;
@@ -153,14 +159,13 @@ function hoverUpdateRow(gameBoardMatrix, column) {
 }
 
 function wipeHovers(gameBoardMatrix) {
-
   gameBoardMatrix.forEach((row, i) => {
-    gameBoardMatrix[i] = row.map(colVal => {
+    gameBoardMatrix[i] = row.map((colVal) => {
       const isHoverValue = colVal === 4 || colVal === 5;
       if (isHoverValue) return 0;
       return colVal;
-    })
-  })
+    });
+  });
 }
 
 function updateActivePlayerText(text) {
@@ -225,12 +230,12 @@ const checkForWinner = () => {
       updateScore(playerValue);
       updateNotification(`${playerWon} has won!`, true);
       const winnerSound = new Audio("../sounds/winner_found.wav"); // better to create new instance in the rare case a game wins immediately after the previous
-      winnerSound.play();
+      //winnerSound.play();
     }
   }
 };
 
-function drawCircle(x, y, color = null, noFill = false) { 
+function drawCircle(x, y, color = null, noFill = false) {
   // x and y are the center point of the circle.
   const { PI } = Math;
   const RADIUS = 40;
@@ -268,10 +273,10 @@ function drawRect(x, y, width, height, color = null) {
 
 function enableDevMode() {
   // draws rectangles to make development easier
-  devMode = true;
-  const dev_node = document.querySelector("#dev");
+  devMode = true; // enable dev mode
+  const dev_node = document.querySelector("#dev"); // Reference the dom node that contains dev related data.
 
-  if (dev_node) dev_node.remove();
+  if (dev_node) dev_node.remove(); // if there already exists a dev node reference. Remove the node.
 
   const divRef = document.querySelector(".devMode");
 
@@ -288,6 +293,36 @@ function enableDevMode() {
 
 function setupBoard() {}
 
+function drawCircleByValue(currentPosition, xCenter, yCenter) {
+  const isEmpty = currentPosition === 0;
+  const isYellow = currentPosition === 2;
+  const isWinnerCircle = currentPosition === 3;
+
+  if (isEmpty) {
+    drawCircle(xCenter, yCenter);
+    return;
+  }
+  if (isWinnerCircle) {
+    const winnerCircleFillColor = turn ? RED : YELLOW;
+    const winnerOuterColor = "#00ff00";
+    drawCircle(xCenter, yCenter, winnerCircleFillColor);
+    drawCircle(xCenter, yCenter, winnerOuterColor, true);
+    return;
+  }
+
+  const colors = {
+    0: null,
+    1: RED, // an array cell of 1 is RED
+    4: HOVER_RED, // an array cell of 4 is RED HOVER
+    2: isYellow, // an array cell of 2 is YELLOW
+    5: HOVER_YELLOW, // an array cell of 5 is YELLOW HOVER
+  };
+
+  const CIRLCE_COLOR = colors[currentPosition];
+
+  drawCircle(xCenter, yCenter, CIRLCE_COLOR);
+}
+
 // main function!
 function updateBoard(gameMatrix) {
   // 42 sub rectangles in canvas
@@ -295,8 +330,8 @@ function updateBoard(gameMatrix) {
   // width = 145.71 (1020 / 7) 7 being the columns
   // height = 106.66 (640 / 6) 6 being the rows.
 
-  const CANVASHEIGHT = 640;
-  const CANVASWIDTH = 1020;
+  const CANVAS_HEIGHT = 640;
+  const CANVAS_WIDTH = 1020;
   const APPROX_RECT_WIDTH = 145.71;
   const APPROX_RECT_HEIGHT = 106.66;
   const gameBoardLength = gameMatrix.length;
@@ -306,18 +341,23 @@ function updateBoard(gameMatrix) {
   if (devMode) {
     for (let column in gameBoardRow) {
       const startingX = 0 + APPROX_RECT_WIDTH * +column;
-      drawRect(startingX, 0, APPROX_RECT_WIDTH, CANVASHEIGHT, 'black');
+      drawRect(startingX, 0, APPROX_RECT_WIDTH, CANVAS_HEIGHT, "black");
     }
 
     for (let row in gameMatrix) {
       const startingX = 0 + APPROX_RECT_HEIGHT * +row;
-      drawRect(0, startingX, CANVASWIDTH, APPROX_RECT_HEIGHT, 'black');
+      drawRect(0, startingX, CANVAS_WIDTH, APPROX_RECT_HEIGHT, "black");
     }
+  }
+
+  if (botEnabled) {
+    const isBotTurn = turn === false; // if turn is false that means its yellow's turn which is the bot.
+    if (isBotTurn) utils.bot(gameBoard, updaterow, wipeHovers); // call bot method and pass in game data, updaterow fn, and clear hovers fn
   }
 
   for (let i = 0; i < gameBoardLength; i++) {
     // iterate over the rows
-    const y1 = APPROX_RECT_HEIGHT * i; // the height of th rectangle the circle is in is 106.66 multiple that by the index
+    const y1 = APPROX_RECT_HEIGHT * i; // the height of th rectangle the circle is in is 106.66 multiply that by the index
     const y2 = APPROX_RECT_HEIGHT * (i + 1);
     for (let j = 0; j < gameBoardWidth; j++) {
       const x1 = APPROX_RECT_WIDTH * j;
@@ -325,24 +365,7 @@ function updateBoard(gameMatrix) {
       const xCenter = (x1 + x2) / 2; // calculates the center of the rect by summing x1 and x2 and dividing by 2
       const yCenter = (y1 + y2) / 2; // calculates the center of the rect by summing y1 and y2 and dividing by 2
       const currentPos = gameMatrix[i][j]; // where we are in the matrix while drawing
-      const isEmpty = currentPos == 0;
-      const isRed = currentPos === 1;
-      const isRedHover = currentPos === 4;
-      const isYellow = currentPos === 2;
-      const isYellowHover = currentPos === 5;
-      const isWinnerCircle = currentPos === 3;
-      // TODO Look below and check isWinnerCircle. This aims to be an indicator on where the win occurred
-      if (isEmpty) drawCircle(xCenter, yCenter); // consider separating this into its own function
-      if (isRed) drawCircle(xCenter, yCenter, RED);
-      if (isRedHover) drawCircle(xCenter, yCenter, TRAN_RED);
-      if (isYellow) drawCircle(xCenter, yCenter, YELLOW);
-      if (isYellowHover) drawCircle(xCenter, yCenter, TRAN_YELLOW);
-      if (isWinnerCircle) {
-        const winnerCircleFillColor = turn ? RED : YELLOW;
-        const winnerOuterColor = '#00ff00';
-        drawCircle(xCenter, yCenter, winnerCircleFillColor);
-        drawCircle(xCenter, yCenter, winnerOuterColor, true);
-      } 
+      drawCircleByValue(currentPos, xCenter, yCenter);
     }
   }
 }
